@@ -1,0 +1,17 @@
+{
+  "name": "json2schema",
+  "version": "1.0.0",
+  "main": "_json2schema/cli.js",
+  "bin": {
+    "json2schema": "./_json2schema/cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "deepmerge": "^1.5.2"
+  }
+}
