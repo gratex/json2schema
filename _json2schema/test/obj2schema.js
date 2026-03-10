@@ -18,9 +18,9 @@ function namingConventionsSampleImpl(v, k, s /*,opt*/) {
 			s.type = "string";
 		}
 	}
-//			if (endsWith(k, "Short")) {
-//				s.maximum = "128";
-//			}
+	//			if (endsWith(k, "Short")) {
+	//				s.maximum = "128";
+	//			}
 
 	function keyEnds(sufix) {
 		/*jshint expr:true */
@@ -28,163 +28,176 @@ function namingConventionsSampleImpl(v, k, s /*,opt*/) {
 	}
 }
 
-describe("json2schema", function() {
-	it("empty", function() {
+describe("json2schema", function () {
+	it("empty", function () {
 		var d = {};
 		var e = {};
 		assertSame(e, d);
 	});
-	it("numbers", function() {
+	it("numbers", function () {
 		var d = {
-			n : -1.01,
-			i : 5
+			n: -1.01,
+			i: 5
 		};
 		var e = {
-			type : "object",
-			additionalProperties : false,
-			properties : {
-				n : {
-					type : "number"
+			type: "object",
+			additionalProperties: false,
+			properties: {
+				n: {
+					type: "number"
 				},
-				i : {
-					type : "integer"
+				i: {
+					type: "integer"
 				}
 			}
 		};
 		assertSame(e, obj2schema(d, {
-			allMandatory : false,
-			schemaHeader : false
+			allMandatory: false,
+			schemaHeader: false
 		}));
 	});
-	it("strings", function() {
+	it("strings", function () {
 		var d = {
-			s : "s"
+			s: "s"
 		};
 		var e = {
-			type : "object",
-			additionalProperties : false,
-			properties : {
-				s : {
-					type : "string"
+			type: "object",
+			additionalProperties: false,
+			properties: {
+				s: {
+					type: "string"
 				}
 			}
 		};
 		assertSame(e, obj2schema(d, {
-			allMandatory : false,
-			schemaHeader : false
+			allMandatory: false,
+			schemaHeader: false
 		}));
 	});
-	it("date-from-native", function() {
+	it("date-from-native", function () {
 		var d = {
-			d1 : new Date()
+			d1: new Date()
 		};
 		var e = {
-			type : "object",
-			additionalProperties : false,
-			properties : {
-				d1 : {
-					type : "string",
-					format : "date-time"
+			type: "object",
+			additionalProperties: false,
+			properties: {
+				d1: {
+					type: "string",
+					format: "date-time"
 				}
 			}
 		};
 		assertSame(e, obj2schema(d, {
-			allMandatory : false,
-			schemaHeader : false
+			allMandatory: false,
+			schemaHeader: false
 		}));
 	});
-	it("date-from-format", function() {
+
+	it("date-from-format", function () {
 		var d = "2009-11-16T17:50:31+0200";
 		var e = {
-			type : "string",
-			format : "date-time"
+			type: "string",
+			format: "date-time"
 		};
 		assertSame(e, obj2schema(d, {
-			allMandatory : false,
-			schemaHeader : false
+			allMandatory: false,
+			schemaHeader: false
 		}));
 	});
-	it("nested-objects", function() {
+	it("date-from-format-zullu", function () {
+		var d = "2026-03-10T09:16:12Z";
+		var e = {
+			type: "string",
+			format: "date-time"
+		};
+		assertSame(e, obj2schema(d, {
+			allMandatory: false,
+			schemaHeader: false
+		}));
+	});
+	
+	it("nested-objects", function () {
 		var d = {
-			o : {
-				s : "dos"
+			o: {
+				s: "dos"
 			}
 		};
 		var e = {
-			type : "object",
-			additionalProperties : false,
-			properties : {
-				o : {
-					type : "object",
-					additionalProperties : false,
-					properties : {
-						s : {
-							type : "string"
+			type: "object",
+			additionalProperties: false,
+			properties: {
+				o: {
+					type: "object",
+					additionalProperties: false,
+					properties: {
+						s: {
+							type: "string"
 						}
 					}
 				}
 			}
 		};
 		assertSame(e, obj2schema(d, {
-			allMandatory : false,
-			schemaHeader : false
+			allMandatory: false,
+			schemaHeader: false
 		}));
 	});
-	it("array-of-numbers", function() {
+	it("array-of-numbers", function () {
 		var d = [
 			1,
 			-2,
 			3.78
 		];
 		var e = { //TODO: is this ok schema ?
-			type : "array",
-			additionalItems : false,
-			items : {
-				type : ["integer","number"] //based on first item ! //TODO: fix
+			type: "array",
+			additionalItems: false,
+			items: {
+				type: ["integer", "number"] //based on first item ! //TODO: fix
 			}
 		};
 		assertSame(e, obj2schema(d, {
-			allMandatory : false,
-			schemaHeader : false
+			allMandatory: false,
+			schemaHeader: false
 		}));
 	});
-	it("array-nested-of-objects", function() {
+	it("array-nested-of-objects", function () {
 		var d = {
-			o : {
-				s : "dos"
+			o: {
+				s: "dos"
 			},
-			a : [
+			a: [
 				{
-					i : 1,
-					s : "string"
+					i: 1,
+					s: "string"
 				}
 			]
 		};
 		var e = {
-			type : "object",
-			additionalProperties : false,
-			properties : {
-				o : {
-					type : "object",
-					additionalProperties : false,
-					properties : {
-						s : {
-							type : "string"
+			type: "object",
+			additionalProperties: false,
+			properties: {
+				o: {
+					type: "object",
+					additionalProperties: false,
+					properties: {
+						s: {
+							type: "string"
 						}
 					}
 				},
-				a : {
-					type : "array",
-					additionalItems : false,
-					items : {
-						type : "object",
-						additionalProperties : false,
-						properties : {
-							i : {
-								type : "integer"
+				a: {
+					type: "array",
+					additionalItems: false,
+					items: {
+						type: "object",
+						additionalProperties: false,
+						properties: {
+							i: {
+								type: "integer"
 							},
-							s : {
-								type : "string"
+							s: {
+								type: "string"
 							}
 						}
 					}
@@ -192,56 +205,105 @@ describe("json2schema", function() {
 			}
 		};
 		assertSame(e, obj2schema(d, {
-			allMandatory : false,
-			schemaHeader : false
+			allMandatory: false,
+			schemaHeader: false
 		}));
 	});
-	it("options-switches", function() {
+	it("options-switches", function () {
 		var d = 10;
 		var e = {
-			type : "number"
+			type: "number"
 		};
 		assertSame(e, obj2schema(d, {
-			numberInteger : false,
-			schemaHeader : false
-		//turn off integral detection
+			numberInteger: false,
+			schemaHeader: false
+			//turn off integral detection
 		}));
 	});
-	it("options-numberPositive", function() {
+	it("options-numberPositive", function () {
 		var d = 10;
 		var e = {
-			type : "integer",
-			minimum : 0
+			type: "integer",
+			minimum: 0
 		};
 		assertSame(e, obj2schema(d, {
-			numberPositive : true,
-			schemaHeader : false
-		//turn off integral detection
+			numberPositive: true,
+			schemaHeader: false
+			//turn off integral detection
 		}));
 	});
-	it("options-namingConventions", function() {
+
+	it("array-with-empty-and-populated-should-not-have-null-type", function () {
+		var d = [{ "arr": [] }, { "arr": [1, 2, 3] }];
+		var e = {
+			type: "array",
+			additionalItems: false,
+			items: {
+				type: "object",
+				additionalProperties: false,
+				properties: {
+					arr: {
+						type: "array",
+						additionalItems: false,
+						items: {
+							type: "integer"
+						}
+					}
+				}
+			}
+		};
+		assertSame(e, obj2schema(d, {
+			allMandatory: false,
+			schemaHeader: false
+		}));
+	});
+	it("array-with-null-and-populated-should-have-null-type", function () {
+		var d = [{ "arr": [null] }, { "arr": [1, 2, 3] }];
+		var e = {
+			type: "array",
+			additionalItems: false,
+			items: {
+				type: "object",
+				additionalProperties: false,
+				properties: {
+					arr: {
+						type: "array",
+						additionalItems: false,
+						items: {
+							type: ["null", "integer"]
+						}
+					}
+				}
+			}
+		};
+		assertSame(e, obj2schema(d, {
+			allMandatory: false,
+			schemaHeader: false
+		}));
+	});
+	it("options-namingConventions", function () {
 		var d = {
-			abcId : null,
-			abcName : null,
-			xId : "something" //detected from data, skipped by nameing conventions
+			abcId: null,
+			abcName: null,
+			xId: "something" //detected from data, skipped by nameing conventions
 		};
 		var properties = {
 
-			abcId : {
-				type : "integer"
+			abcId: {
+				type: "integer"
 			},
-			abcName : {
-				type : "string"
+			abcName: {
+				type: "string"
 			},
-			xId : {
-				type : "string" //unchanged detected from type not name
+			xId: {
+				type: "string" //unchanged detected from type not name
 			}
 		};
 		var options = {
-			namingConventions : namingConventionsSampleImpl,
-			allMandatory : false,
-			schemaHeader : false
-		//untouch is just part of this SAMPLE impl, not general rule
+			namingConventions: namingConventionsSampleImpl,
+			allMandatory: false,
+			schemaHeader: false
+			//untouch is just part of this SAMPLE impl, not general rule
 		};
 		assertSame(properties, obj2schema(d, options).properties);
 

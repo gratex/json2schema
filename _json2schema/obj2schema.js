@@ -12,7 +12,14 @@ function flat(arr) {
 function correctType(destination, sources, key) {
     if (Object.prototype.toString.call(destination) == '[object Object]') {
         Object.keys(destination).forEach(function(k) {
-            destination[k] = correctType(destination[k], sources.map((i) => i && i[k] != null ? i[k] : "null"), k);
+            const validSources = sources.map((i) => i && i[k] != null ? i[k] : undefined).filter(s => s !== undefined);
+            if (validSources.length > 0) {
+                destination[k] = correctType(destination[k], validSources, k);
+            } else if (k === "type" && destination[k] !== undefined) {
+                // If no valid sources for 'type', and destination already has a type, it means it was inferred from an empty object.
+                // This type should be removed.
+                delete destination[k];
+            }
         });
     }
 
@@ -44,7 +51,7 @@ function getType(o) {
     return o === undefined ? "undefined" : (o === null ? "null" : Object.prototype.toString.call(o).split(" ").pop().split("]").shift().toLowerCase());
 }
 
-var DATE_TIME_EXPR = /^\d{3,4}-[01]?\d-[0-3]?\d(T[0-2]?\d:[0-5]?\d:[0-5]?\d(\.\d+)?([+-][0-2]?\d:[0-5]?\d|Z))?$/;
+var DATE_TIME_EXPR = /^\d{3,4}-[01]?\d-[0-3]?\d(T[0-2]?\d:[0-5]?\d:[0-5]?\d(\.\d+)?([+-][0-2]?\d:?[0-5]?\d|Z))?$/;
 
 function traverse(v, k, s, opts) { //TODO: rewrite to traverse/visitor
     opts = Object.assign({}, DEFAULT_OPTIONS, opts);
@@ -62,9 +69,10 @@ function traverse(v, k, s, opts) { //TODO: rewrite to traverse/visitor
         props = s.additionalItems = false;
         var items = [];
         v.forEach(function(item) {
-            if (item == null) {
-                return;
-            }
+            // If item is null, we still want to process it to include 'null' type
+            // if (item == null) {
+            //     return;
+            // }
             var c = {};
             items.push(c);
             traverse(item, null, c, opts);
