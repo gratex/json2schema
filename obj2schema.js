@@ -1,4 +1,3 @@
-/*global module:true */
 var deepmerge = require("deepmerge");
 
 module.exports = object2Schema;
@@ -130,11 +129,11 @@ function traverse(v, k, s, opts) { //TODO: rewrite to traverse/visitor
     return s;
 }
 
-function object2Schema(value, options) {
+function object2Schema(value, options = {}) {
     // add header
     var obj = options.schemaHeader ? {
-        "$schema": "http://json-schema.org/draft-03/schema#",
-        "id": "http://json-schema.org/draft-03/schema#"
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "id": "http://json-schema.org/draft-04/schema#"
     } : {};
 
     var schema = traverse(value, null, obj, options);

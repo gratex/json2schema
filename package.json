@@ -1,20 +1,24 @@
 {
   "name": "json2schema",
-  "version": "1.0.0",
-  "main": "_json2schema/cli.js",
+  "version": "1.0.1",
+  "engines": {
+    "node": ">=20"
+  },
+  "main": "./obj2schema.js",
   "bin": {
-    "json2schema": "./_json2schema/cli.js"
+    "json2schema": "./cli.js"
+  },
+  "exports": {
+    "import": "./obj2schema.js",
+    "require": "./obj2schema.js"
   },
   "scripts": {
-    "test": "mocha _json2schema/test/obj2schema.js"
+    "test": "node --test test/obj2schema.test.js"
   },
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "Convert JSON to JSON Schema",
   "dependencies": {
     "deepmerge": "^1.5.2"
-  },
-  "devDependencies": {
-    "mocha": "^11.7.5"
   }
 }

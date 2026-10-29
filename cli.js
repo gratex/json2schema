@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
 const obj2schema = require('./obj2schema.js');
 
 const optionDefs = [

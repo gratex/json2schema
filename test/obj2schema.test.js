@@ -1,14 +1,12 @@
-/*global describe:true,it:true */
-var assert = require("assert");
-var obj2schema = require("../obj2schema.js");
-
+const { describe, it } = require('node:test');
+const assert = require('node:assert');
+const obj2schema = require('../obj2schema.js');
 
 function assertSame(e, d, h) {
-	//console.log(e, d);
-	return assert.equal(JSON.stringify(e), JSON.stringify(d), h);
+	return assert.strictEqual(JSON.stringify(e), JSON.stringify(d), h);
 }
 
-function namingConventionsSampleImpl(v, k, s /*,opt*/) {
+function namingConventionsSampleImpl(v, k, s) {
 	var typeAlreadyDetected = s.type && s.type !== "undefined" && s.type !== "null";
 
 	if (!typeAlreadyDetected) {
@@ -18,12 +16,8 @@ function namingConventionsSampleImpl(v, k, s /*,opt*/) {
 			s.type = "string";
 		}
 	}
-	//			if (endsWith(k, "Short")) {
-	//				s.maximum = "128";
-	//			}
 
 	function keyEnds(sufix) {
-		/*jshint expr:true */
 		return k.lastIndexOf(sufix) + sufix.length === k.length;
 	}
 }
@@ -116,7 +110,7 @@ describe("json2schema", function () {
 			schemaHeader: false
 		}));
 	});
-	
+
 	it("nested-objects", function () {
 		var d = {
 			o: {
@@ -149,11 +143,11 @@ describe("json2schema", function () {
 			-2,
 			3.78
 		];
-		var e = { //TODO: is this ok schema ?
+		var e = {
 			type: "array",
 			additionalItems: false,
 			items: {
-				type: ["integer", "number"] //based on first item ! //TODO: fix
+				type: ["integer", "number"]
 			}
 		};
 		assertSame(e, obj2schema(d, {
@@ -217,7 +211,6 @@ describe("json2schema", function () {
 		assertSame(e, obj2schema(d, {
 			numberInteger: false,
 			schemaHeader: false
-			//turn off integral detection
 		}));
 	});
 	it("options-numberPositive", function () {
@@ -229,7 +222,6 @@ describe("json2schema", function () {
 		assertSame(e, obj2schema(d, {
 			numberPositive: true,
 			schemaHeader: false
-			//turn off integral detection
 		}));
 	});
 
@@ -285,7 +277,7 @@ describe("json2schema", function () {
 		var d = {
 			abcId: null,
 			abcName: null,
-			xId: "something" //detected from data, skipped by nameing conventions
+			xId: "something"
 		};
 		var properties = {
 
@@ -296,17 +288,14 @@ describe("json2schema", function () {
 				type: "string"
 			},
 			xId: {
-				type: "string" //unchanged detected from type not name
+				type: "string"
 			}
 		};
 		var options = {
 			namingConventions: namingConventionsSampleImpl,
 			allMandatory: false,
 			schemaHeader: false
-			//untouch is just part of this SAMPLE impl, not general rule
 		};
 		assertSame(properties, obj2schema(d, options).properties);
-
-		//--------------------------------------------------------------------------------
 	});
 });
