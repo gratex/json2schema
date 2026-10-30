@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js version](https://img.shields.io/badge/Node.js-%3E%3D20+-green.svg)](https://nodejs.org)
 
-Convert JSON into a [JSON Schema](https://json-schema.org/) (draft v4). Generates schema draft v4 from JSON data.
+Convert JSON into a [JSON Schema](https://json-schema.org/) (draft v3). Generates schema draft v3 from JSON data.
 
 ## Installation
 
